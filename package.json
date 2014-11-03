@@ -1,6 +1,6 @@
 {
   "name": "edmodo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Edmodo API client to simplify making requests to, and parsing responses from, the Edmodo API.",
   "main": "index.js",
   "scripts": {
