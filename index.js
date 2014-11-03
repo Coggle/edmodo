@@ -46,11 +46,12 @@ EdmodoAPI.prototype.request = function(options, callback){
 
   this.logger.debug("EdmdoAPI:request:", options.method, url);
 
+  var self =this;
   request({
        url: url,
     method: options.method
   }, function(err, response, body){
-    this.logger.debug("EdmdoAPI:response:", err, response, body);
+    self.logger.debug("EdmdoAPI:response:", err, response, body);
     if(err){
       return callback(err);
     }else{
