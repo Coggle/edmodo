@@ -84,21 +84,23 @@ EdmodoAPI.prototype.parsePostRequest = function(req, callback){
           files: 0
      }
   });
+  // we only report the first error, but parse as much valid data as we can:
   var error = null;
   var response = {};
   busboy.on('field', function(fieldname, val, name_truncated, val_truncated){
     if(name_truncated){
-      error = new Error("fieldname '" + fieldname + "' in request truncated");
+      if(!error)
+        error = new Error("fieldname '" + fieldname + "' in request truncated");
       return;
     }
     if(val_truncated){
-      error = new Error("fieldname '" + fieldname + "' value in request truncated");
+      if(!error)
+        error = new Error("fieldname '" + fieldname + "' value in request truncated");
       return;
     }
     try{
       response[fieldname] = JSON.parse(val);
     }catch(e){
-      // report only the first error
       if(!error)
         error = e;
     }
