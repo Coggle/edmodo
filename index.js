@@ -41,12 +41,14 @@ EdmodoAPI.prototype.request = function(options, callback){
   }
   query_params = _.extend(query_params, options.query_params || {});
   
-  var endpoint = options.endpoint.replace(/^\/*/, "");
-  var url = "https://" + this.api_host + "/v1.1/" + endpoint + "?" + querystring.stringify(query_params);
+  var endpoint = options.endpoint.replace(/^\/*/, "").replace(/.json$/, "");
+  var url = "https://" + this.api_host +
+            "/v1.1/" + endpoint + ".json?" +
+            querystring.stringify(query_params);
 
   this.logger.debug("EdmdoAPI:request:", options.method, url);
 
-  var self =this;
+  var self = this;
   request({
        url: url,
     method: options.method
@@ -55,7 +57,14 @@ EdmodoAPI.prototype.request = function(options, callback){
     if(err){
       return callback(err);
     }else{
-      callback(null, body);
+      var json = null;
+      var error = null;
+      try{
+        json = JSON.parse(body);
+      }catch(e){
+        error = new Error("Failed to parse response: " + e.message);
+      }
+      callback(error, json);
     }
   });
 };
