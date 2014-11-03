@@ -51,8 +51,11 @@ EdmodoAPI.prototype.request = function(options, callback){
     method: options.method
   }, function(err, response, body){
     this.logger.debug("EdmdoAPI:response:", err, response, body);
-    if(err) return callback(err);
-    callback(null, body);
+    if(err){
+      return callback(err);
+    }else{
+      callback(null, body);
+    }
   });
 };
 
@@ -72,13 +75,13 @@ EdmodoAPI.prototype.post = function(options, callback){
   return this.retriedRequest(_.extend(options, {method:'POST'}), callback);
 };
 
-EdmodoAPI.prototype.parsePostRequest = function(res, callback){
+EdmodoAPI.prototype.parsePostRequest = function(req, callback){
   var busboy = new Busboy({
     headers: req.headers,
      limits: {
-      fileSize: 0,
-         files: 0
-      }
+       fileSize: 0,
+          files: 0
+     }
   });
   var error = null;
   var response = {};

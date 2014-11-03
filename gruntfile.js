@@ -3,20 +3,15 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
-      files: ['*.js'],
+      files: ['lib/**/*.js', './*.js'],
       options: {
-        // options here to override JSHint defaults
         globals: {
-          jQuery: true,
-          console: true,
-          module: true,
-          document: true
         }
       }
     },
     jsjsdoc: {
       main: {
-        files: {'docs/main.md': ['*.js', 'test/*.js']},
+        files: {'docs/main.md': ['./*.js', 'lib/**/*.js']},
       }
     },
     watch: {
@@ -24,7 +19,7 @@ module.exports = function(grunt) {
         options: {
           spawn: false
         },
-        files: ['*.js', 'test/*.js'],
+        files: ['lib/**/*.js', './*.js'],
         tasks: ['default']
       }
     }
