@@ -72,7 +72,7 @@ EdmodoAPI.prototype.post = function(options, callback){
   return this.retriedRequest(_.extend(options, {method:'POST'}), callback);
 };
 
-EdmodoAPI.prototype.parsePostResponse = function(res, callback){
+EdmodoAPI.prototype.parsePostRequest = function(res, callback){
   var busboy = new Busboy({
     headers: req.headers,
      limits: {

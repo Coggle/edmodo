@@ -21,7 +21,7 @@ var edmodo = new EdmodoAPI({
 
 app.post("/edmodo/install", function(req, res, next){
   // parse the json-encoded-in-multipart-field response from Edmodo:
-  edmodo.parsePostResponse(req, function(err, fields){
+  edmodo.parsePostRequest(req, function(err, fields){
     if(err)
       throw err;
     if(!fields.install)
@@ -36,8 +36,9 @@ app.post("/edmodo/install", function(req, res, next){
     }, function(err, response){
       if(err)
         throw err;
-
-      console.log("success!", response);
+      
+      // send success response
+      return res.send({"status":"success"});
     });
   });
 });
@@ -48,7 +49,10 @@ To log requests and responses, provide a logger object when constructing the
 API client. The logger must implement `debug`, and `warn` methods, which accept
 any number of arguments to log: `logger.debug` will be used to log requests and
 responses, and `logger.warn` will be used to log request failures that are
-retried. (Persistent API failures will return an error):
+retried (persistent API failures will return an error).
+
+This is compatible with using the
+[winston](https://github.com/flatiron/winston) logging framework:
 
 ```js
 var winston = require('winston');
