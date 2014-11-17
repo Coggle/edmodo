@@ -46,16 +46,18 @@ EdmodoAPI.prototype.request = function(options, callback){
             "/v1.1/" + endpoint + ".json?" +
             querystring.stringify(query_params);
 
-  if(typeof this.logger.debug === 'function')
+  if(typeof this.logger.debug === 'function'){
     this.logger.debug("EdmdoAPI:request:", options.method, url);
+  }
 
   var self = this;
   request({
        url: url,
     method: options.method
   }, function(err, response, body){
-    if(typeof this.logger.debug === 'function')
+    if(typeof self.logger.debug === 'function'){
       self.logger.debug("EdmdoAPI:response:", err, response, body);
+    }
     if(err){
       return callback(err);
     }else{
