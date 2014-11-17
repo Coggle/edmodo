@@ -46,14 +46,16 @@ EdmodoAPI.prototype.request = function(options, callback){
             "/v1.1/" + endpoint + ".json?" +
             querystring.stringify(query_params);
 
-  this.logger.debug("EdmdoAPI:request:", options.method, url);
+  if(typeof this.logger.debug === 'function')
+    this.logger.debug("EdmdoAPI:request:", options.method, url);
 
   var self = this;
   request({
        url: url,
     method: options.method
   }, function(err, response, body){
-    self.logger.debug("EdmdoAPI:response:", err, response, body);
+    if(typeof this.logger.debug === 'function')
+      self.logger.debug("EdmdoAPI:response:", err, response, body);
     if(err){
       return callback(err);
     }else{
@@ -74,7 +76,9 @@ EdmodoAPI.prototype.retriedRequest = function(options, callback){
   var retry = new Backoff(function(cb){
     self.request(options, cb);
   }, callback, {maxAttemps: 3});
-  retry.on('attempt_failed', this.logger.warn);
+  if(typeof this.logger.warn === 'function'){
+    retry.on('attempt_failed', this.logger.warn);
+  }
 };
 
 EdmodoAPI.prototype.get = function(options, callback){
